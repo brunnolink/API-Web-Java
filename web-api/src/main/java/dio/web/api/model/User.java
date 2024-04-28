@@ -1,14 +1,34 @@
 package dio.web.api.model;
 
-public class Usuario {
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "tab_user")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
     private Integer id;
+    @Column(length = 50, nullable = false)
     private String login;
+    @Column(length = 100, nullable = false)
     private String password;
-    public Usuario() {}
-    public Usuario(String login, String password) {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tab_user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_id")
+    private List<String> roles = new ArrayList<>();
+
+    public User(){
+
+    }
+    public User(String login, String password){
         this.login = login;
         this.password = password;
     }
+
+
 
     @Override
     public String toString() {
@@ -40,5 +60,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

@@ -1,30 +1,52 @@
 package dio.web.api.model;
 
-public class Manager {
-    private Integer id;
-    private String login;
-    private String password;
 
-    public Manager(String login, String password) {
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Entity
+@Table(name = "tab_manager")
+public class Manager {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_manager")
+    private Integer idManager;
+    @Column(length = 50, nullable = false)
+    private String login;
+    @Column(length = 100, nullable = false)
+    private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tab_manager_roles", joinColumns = @JoinColumn(name = "manager_id"))
+    @Column(name = "role_id")
+    private List<String> roles = new ArrayList<>();
+
+
+    public Manager(String login, String password){
         this.login = login;
         this.password = password;
+    }
+
+    public Manager() {
+
     }
 
     @Override
     public String toString() {
         return "Manager{" +
-                "id=" + id +
+                "id=" + idManager +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdManager() {
+        return idManager;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdManager(Integer id) {
+        this.idManager = id;
     }
 
     public String getLogin() {
@@ -42,4 +64,13 @@ public class Manager {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
 }
